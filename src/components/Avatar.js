@@ -26,6 +26,11 @@ const Avatar = () => {
           dispatch({ type: "UPDATE_NAME", name: response[0].name });
         });
     })();
+
+    return () => {
+      setPhoto("https://cl.ly/55da82beb939/download/avatar-default.jpg");
+      dispatch({ type: "UPDATE_NAME", name: "" });
+    };
   }, []);
 
   return <Image source={{ uri: photo }} />;

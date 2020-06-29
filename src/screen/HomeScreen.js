@@ -16,9 +16,12 @@ import Menu from "../components/Menu";
 import Avatar from "../components/Avatar";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const menu = useSelector((state) => state.menuReducers.action);
   const { name: userName } = useSelector((state) => state.nameReducer);
 
@@ -202,14 +205,18 @@ const HomeScreen = () => {
               showsHorizontalScrollIndicator={false}
             >
               {cards.map(({ title, image, caption, logo, subtitle }, index) => (
-                <Card
+                <TouchableOpacity
                   key={index}
-                  title={title}
-                  image={image}
-                  caption={caption}
-                  logo={logo}
-                  subtitle={subtitle}
-                />
+                  onPress={() => navigation.push("Section")}
+                >
+                  <Card
+                    title={title}
+                    image={image}
+                    caption={caption}
+                    logo={logo}
+                    subtitle={subtitle}
+                  />
+                </TouchableOpacity>
               ))}
             </ScrollView>
 
@@ -244,7 +251,8 @@ const RootView = styled.View`
 const Container = styled.View`
   background: #f0f3f5;
   flex: 1;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
