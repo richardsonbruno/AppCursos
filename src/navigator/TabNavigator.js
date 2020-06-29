@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -39,11 +40,14 @@ const TabNavigator = () => (
       name="HomeStack"
       component={HomeStack}
       options={(props) => {
+        console.log(props);
         let tabBarVisible = true;
-        const routeName = props.route.state.routeNames[props.route.state.index];
-        if (routeName === "Section") {
+        const nameRoute = useSelector((state) => state.routesReducers.route);
+
+        if (nameRoute === "Section") {
           tabBarVisible = false;
         }
+
         return {
           tabBarVisible,
           tabBarLabel: "Home",

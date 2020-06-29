@@ -127,6 +127,10 @@ const HomeScreen = () => {
   ]);
 
   useEffect(() => {
+    dispatch({ type: "UPDATE_HOME" });
+  });
+
+  useEffect(() => {
     toggleMenu();
   }, [menu]);
 
@@ -204,17 +208,17 @@ const HomeScreen = () => {
               style={{ paddingBottom: 30 }}
               showsHorizontalScrollIndicator={false}
             >
-              {cards.map(({ title, image, caption, logo, subtitle }, index) => (
+              {cards.map((card, index) => (
                 <TouchableOpacity
                   key={index}
-                  onPress={() => navigation.push("Section")}
+                  onPress={() => navigation.push("Section", { section: card })}
                 >
                   <Card
-                    title={title}
-                    image={image}
-                    caption={caption}
-                    logo={logo}
-                    subtitle={subtitle}
+                    title={card.title}
+                    image={card.image}
+                    caption={card.caption}
+                    logo={card.logo}
+                    subtitle={card.subtitle}
                   />
                 </TouchableOpacity>
               ))}
