@@ -18,6 +18,42 @@ import Avatar from "../components/Avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+
+const QueryCard = gql`
+  {
+    cardsCollection {
+      items {
+        title
+        subtitle
+        image {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+        subtitle
+        caption
+        logo {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+      }
+    }
+  }
+`;
+
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -208,20 +244,35 @@ const HomeScreen = () => {
               style={{ paddingBottom: 30 }}
               showsHorizontalScrollIndicator={false}
             >
-              {cards.map((card, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => navigation.push("Section", { section: card })}
-                >
-                  <Card
-                    title={card.title}
-                    image={card.image}
-                    caption={card.caption}
-                    logo={card.logo}
-                    subtitle={card.subtitle}
-                  />
-                </TouchableOpacity>
-              ))}
+              <Query query={QueryCard}>
+                {({ loading, error, data }) => {
+                  if (loading) return <Message>Loading...</Message>;
+                  if (error) return <Message>error...</Message>;
+
+                  return (
+                    <>
+                      {data.cardsCollection.items.map((card, index) => {
+                        return (
+                          <TouchableOpacity
+                            key={index}
+                            onPress={() =>
+                              navigation.push("Section", { section: card })
+                            }
+                          >
+                            <Card
+                              title={card.title}
+                              image={card.image.url}
+                              caption={card.caption}
+                              logo={card.logo}
+                              subtitle={card.subtitle}
+                            />
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </>
+                  );
+                }}
+              </Query>
             </ScrollView>
 
             <Subtitle>Popular Courses</Subtitle>
@@ -246,6 +297,10 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
+
+const CardCollection = styled.View``;
+
+const Message = styled.Text``;
 
 const RootView = styled.View`
   flex: 1;

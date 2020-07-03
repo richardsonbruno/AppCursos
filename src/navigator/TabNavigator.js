@@ -40,7 +40,6 @@ const TabNavigator = () => (
       name="HomeStack"
       component={HomeStack}
       options={(props) => {
-        console.log(props);
         let tabBarVisible = true;
         const nameRoute = useSelector((state) => state.routesReducers.route);
 

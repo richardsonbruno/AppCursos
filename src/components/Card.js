@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 const Card = ({ image, title, logo, caption, subtitle }) => (
   <Container>
     <Cover>
-      <Image source={image} />
+      <Image source={{ uri: image }} />
       <Title>{title}</Title>
     </Cover>
     <Content>
