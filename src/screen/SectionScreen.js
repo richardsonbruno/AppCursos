@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
-import { TouchableOpacity, StatusBar } from "react-native";
+import React, { useEffect, useRef } from "react";
+import WebView from "react-native-webview";
+import { TouchableOpacity, StatusBar, Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +13,7 @@ const SectionScreen = ({
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const webview = useRef();
 
   useEffect(() => {
     dispatch({ type: "UPDATE_SECTION" });
@@ -19,8 +21,6 @@ const SectionScreen = ({
       dispatch({ type: "UPDATE_HOME" });
     };
   }, []);
-
-  console.log(section);
 
   return (
     <Container>
@@ -42,11 +42,74 @@ const SectionScreen = ({
           <Ionicons name="ios-close" size={36} color="#4775f2" />
         </CloseView>
       </TouchableOpacity>
+
+      <Content>
+        <WebView
+          source={{ html: htmlStyles + section.content }}
+          scalesPageToFit={false}
+          scrollEnabled={false}
+          ref={webview}
+          onNavigationStateChange={(event) => {
+            webview.current.stopLoading();
+            if (event.url !== "about:blank") {
+              Linking.openURL(event.url);
+            }
+          }}
+        />
+      </Content>
     </Container>
   );
 };
 
 export default SectionScreen;
+
+const htmlStyles = `
+  <style>
+    * {
+      font-family: -apple-system; 
+          margin: 0;
+          padding: 0;
+      font-size: 17px; 
+      font-weight: normal; 
+      color: #3c4560;
+      line-height: 24px;
+    }
+  
+    h2 {
+      font-size: 20px;
+      text-transform: uppercase;
+      color: #b8bece;
+      font-weight: 600;
+      margin-top: 50px;
+    }
+  
+      p {
+        margin-top: 20px;
+    }
+
+    a {
+      color: #4775f2;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+       img {
+      width: 100%;
+      margin-top: 20px;
+        border-radius: 10px;
+    }
+  
+    strong {
+      font-weight: 700;
+    }
+  
+  </style>
+`;
+
+const Content = styled.View`
+  margin: 20px;
+  height: 100%;
+`;
 
 const Container = styled.View`
   flex: 1;

@@ -49,6 +49,7 @@ const QueryCard = gql`
           width
           height
         }
+        content
       }
     }
   }
@@ -263,7 +264,7 @@ const HomeScreen = () => {
                               title={card.title}
                               image={card.image.url}
                               caption={card.caption}
-                              logo={card.logo}
+                              logo={card.logo.url}
                               subtitle={card.subtitle}
                             />
                           </TouchableOpacity>

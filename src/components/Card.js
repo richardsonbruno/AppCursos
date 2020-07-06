@@ -8,7 +8,7 @@ const Card = ({ image, title, logo, caption, subtitle }) => (
       <Title>{title}</Title>
     </Cover>
     <Content>
-      <Logo source={logo} />
+      <Logo source={{ uri: logo }} />
       <Wrapper>
         <Caption>{caption}</Caption>
         <Subtitle>{subtitle}</Subtitle>
